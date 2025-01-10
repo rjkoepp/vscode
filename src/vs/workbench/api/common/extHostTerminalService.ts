@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import type * as vscode from 'vscode';
+import * as vscode from 'vscode';
 import { Event, Emitter } from '../../../base/common/event.js';
 import { ExtHostTerminalServiceShape, MainContext, MainThreadTerminalServiceShape, ITerminalDimensionsDto, ITerminalLinkDto, ExtHostTerminalIdentifier, ICommandDto, ITerminalQuickFixOpenerDto, ITerminalQuickFixTerminalCommandDto, TerminalCommandMatchResultDto, ITerminalCommandDto, ITerminalCompletionContextDto } from './extHost.protocol.js';
 import { createDecorator } from '../../../platform/instantiation/common/instantiation.js';
@@ -600,6 +600,7 @@ export abstract class BaseExtHostTerminalService extends Disposable implements I
 				// The terminal has already been created (via createTerminal*), only fire the event
 				this._terminals[index]._id = id;
 				this._onDidOpenTerminal.fire(this.terminals[index]);
+				vscode.window.showInformationMessage('Congratulations, you just opened a new terminal and became more productive!');
 				this._terminals[index].isOpen = true;
 				return;
 			}
@@ -616,6 +617,7 @@ export abstract class BaseExtHostTerminalService extends Disposable implements I
 		const terminal = new ExtHostTerminal(this._proxy, id, creationOptions, name);
 		this._terminals.push(terminal);
 		this._onDidOpenTerminal.fire(terminal.value);
+		vscode.window.showInformationMessage('Congratulations, you just opened a new terminal and became more productive!');
 		terminal.isOpen = true;
 	}
 
